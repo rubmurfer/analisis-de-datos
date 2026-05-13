@@ -1,0 +1,26 @@
+/* hola */
+
+body { font-family: Arial, sans-serif; margin: 0; background: #9d9d9d; }
+.container { max-width: 980px; margin: 0 auto; padding: 16px; }
+
+.topbar { background: #222; color: #fff; }
+.brand { margin: 0; font-size: 20px; padding: 16px; }
+.brand a { color: #fff; text-decoration: none; }
+.nav a { color: #ddd; margin-left: 12px; text-decoration: none; }
+.nav a:hover { color: #fff; }
+
+main { background: #ffffff; margin-top: 12px; border-radius: 8px; }
+.footer { color: #666; margin-top: 12px; }
+
+table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+th, td { border-bottom: 1px solid #eee; padding: 10px; text-align: left; }
+th { background: #fafafa; }
+
+.form { display: grid; gap: 12px; max-width: 520px; }
+label { display: grid; gap: 6px; }
+input { padding: 10px; border: 1px solid #ddd; border-radius: 6px; }
+
+.actions { margin-top: 8px; display: flex; gap: 8px; align-items: center; }
+.btn { display: inline-block; padding: 10px 12px; border-radius: 6px; background: #222; color: #fff; text-decoration: none; border: 0; cursor: pointer; }
+.btn.secondary { background: #666; }
+.msg { background: #e8f5e9; border: 1px solid #c8e6c9; padding: 10px; border-radius: 6px; margin-bottom: 12px; }
