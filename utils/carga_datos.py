@@ -6,7 +6,7 @@ import pandas as pd
 from zipfile import ZipFile
 from pathlib import Path
 
-datos = Path(__file__).parent.resolve() / "datos.zip" # Cargamos el fichero .zip desde el directorio actual.
+datos = Path(__file__).parent.resolve() / "../datos.zip" # Cargamos el fichero .zip desde el directorio actual.
 
 with ZipFile(datos) as z: # Creamos los dataframes en base a los ficheros del .zip con sus parámetros correspondientes
         with z.open("datNotas.csv") as f: df_notas = pd.read_csv(f, encoding="latin-1", sep=";")
