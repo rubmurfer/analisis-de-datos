@@ -1,0 +1,10 @@
+<!-- materias.html -->
+
+{% extends "base.html" %}
+
+{% block content %}
+{% if datos %}
+  <div>{{ datos | safe }}</div>
+{% endif %}
+
+{% endblock %}

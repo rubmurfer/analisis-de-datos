@@ -13,19 +13,23 @@
     <div class="container">
         <h1 class="brand"><a href="{{ url_for('inicio') }}">Inicio</a></h1>
         <nav class="nav">
-            <a href="#">Materias</a>
-            <a href="#">Grupos</a>
-            <a href="#">Absentismo</a>
+          <a href="{{ url_for('materias') }}">Materias</a>
+          <a href="#">Grupos</a>
+          <a href="#">Absentismo</a>
         </nav>
     </div>
   </header>
 
   <main class="container">
+    
+    
+    
     {% if msg %}
       <div class="msg">{{ msg }}</div>
     {% endif %}
 
     {% block content %}{% endblock %}
+
   </main>
 
   <footer class="footer">
