@@ -7,7 +7,6 @@ import pandas as pd
 from zipfile import ZipFile
 from pathlib import Path
 
-
 datos = Path(__file__).parent.resolve() / "../datos.zip" # Cargamos el fichero .zip desde el directorio actual.
 
 with ZipFile(datos) as z: # Creamos los dataframes en base a los ficheros del .zip con sus parámetros correspondientes
@@ -28,6 +27,8 @@ df_unidades = df_unidades[["ANNO", "GRUPO", "ESTUDIO", "CURSO"]] # Opcional. Fal
 
 df_notas = df_notas[df_notas["EVALUACION"].isin(["1ª Evaluación", "2ª Evaluación"])] # Solo mostramos las dos primeras evaluaciones
 
+df_notas[["MATRICULA", "ANNO", "CL_MATERIA"]] = df_notas[["MATRICULA", "ANNO", "CL_MATERIA"]].astype(int) # Mostramos estas dato numércios como INT
+
 # Creamos un marco para reemplazar las notas categóricas por numéricas.
 notas_categoricas = {
     "Insuficiente": 2.5,
@@ -44,19 +45,3 @@ notas_categoricas = {
 
 df_notas["NOTA"] = df_notas["NOTA"].replace(notas_categoricas)
 df_notas["NOTA"] = pd.to_numeric(df_notas["NOTA"], errors="coerce")
-
-# print(df_notas["NOTA"].value_counts(dropna=True))
-# print(df_notas["NOTA"].isna().sum())
-
-# Relacionamos los Datasets por campos comúnes
-
-df_notas_matriculas = pd.merge(df_notas, df_matriculas, on="MATRICULA", how="left")
-
-df_notas_materias = pd.merge(df_notas, df_materias, left_on="MATERIA", right_on="DESCRIPCION", how="left")
-
-df_faltas_matriculas = pd.merge(df_faltas, df_matriculas, on="ESTUDIOS", how="left")
-
-#df_faltas_materias = pd.merge(df_faltas, df_materias, on="")
-
-# En datMaterias, el nombre de la materia se llama DESCRIPCION. En datFaltas, la misma se llama MATERIA.
-# He visto, por otro lado, que el CL_MATERIA de datNotas no coincide con el CODIGO de datMaterias
