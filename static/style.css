@@ -44,6 +44,7 @@ th { background: var(--fondo-cabeceras); color: var(--texto-cabeceras); padding:
 td { padding: 8px 12px; border-bottom: 1px solid var(--fondo-tabla-1); color: var(--texto-normal); }
 tr:nth-child(even) { background: var(--fondo-tabla-2); }
 tr:hover { background: var(--fondo-tabla-hover); }
+tbody th { width: 300px; }
 
 .form { display: grid; gap: 12px; max-width: 520px; }
 label { display: grid; gap: 6px; }

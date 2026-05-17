@@ -3,6 +3,15 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+  <div class="msg">
+    Hola, saludos a todos
+  </div>
+
+{% if resumen %}
+  <div>{{ resumen | safe }}</div>
+{% endif %}
+
 {% if datos %}
   <div>{{ datos | safe }}</div>
 {% endif %}

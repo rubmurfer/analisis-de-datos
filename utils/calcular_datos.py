@@ -30,4 +30,14 @@ def obtener_rendimiento_materia(evaluacion=None, curso=None, grupo=None): # Las 
     if curso is not None: df = df[df["CURSO"] == curso]
     if grupo is not None: df = df[df["GRUPO"] == grupo]
 
-    return df
+    # Métricas
+    resumen = df.groupby("MATERIA").agg( # Mostramos las métricas usando Lambda sobre el campo Nota
+        Evaluados=("NOTA", lambda x: x.count()),
+        Media=("NOTA", lambda x: (sum(x) / len(x))),
+        Aprobados=("NOTA", lambda x: (x >= 5).sum()),
+        Suspensos=("NOTA", lambda x: (x < 5).sum()),
+        Porcentaje_Aprobados=("NOTA", lambda x: (x >= 5).sum() / x.count() * 100),
+        Porcentaje_Suspensos=("NOTA", lambda x: (x < 5).sum() / x.count() * 100)
+    ).round(2)
+
+    return df, resumen

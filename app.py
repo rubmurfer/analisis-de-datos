@@ -37,9 +37,12 @@ def materias():
         "ESTADOMATRICULA": "Estado Matrícula"
         }
 
-    df = obtener_rendimiento_materia(evaluacion="1ª Evaluación").head(100).sort_values("NOTA")
-    html = df.to_html(classes="datos", index=True, border=0)
-    return render_template("materias.html", datos=html)
+    # Obtenemos los datos desde la función de calcular_datos.py
+    df, resumen = obtener_rendimiento_materia(evaluacion="1ª Evaluación", grupo="2º DAM D")
+
+    html_datos = df.rename(columns=columnas).head(100).to_html(classes="datos", index=False, border=0)
+    html_resumen = resumen.head(100).to_html(classes="resumen", index=True, border=0)
+    return render_template("materias.html", datos=html_datos, resumen=html_resumen)
 
 
 
