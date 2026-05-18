@@ -16,18 +16,18 @@ with ZipFile(datos) as z: # Creamos los dataframes en base a los ficheros del .z
 		with z.open("datMaterias.csv") as f: df_materias = pd.read_csv(f, encoding="latin-1", sep=";")
 		with z.open("datUnidades.csv") as f: df_unidades = pd.read_csv(f, encoding="latin-1", sep=";")
 
-# Cargamos solo las columnas necesarias
-df_notas = df_notas[["MATRICULA", "ANNO", "CURSO", "EVALUACION", "MATERIA", "CL_MATERIA", "NOTA"]]
-df_matriculas = df_matriculas[["MATRICULA", "ETAPA", "ANNO", "ESTUDIOS", "GRUPO", "ESTADOMATRICULA"]]
-df_faltas = df_faltas[["EXPEDIENTE", "ANNO", "FECHA_FALTA", "ESTUDIOS", "GRUPO", "MATERIA", "AUSENCIAS", "RETRASOS", "JUSTIFICADAS"]]
+# Cargamos solo las columnas necesarias | He decidido quitar la columna de ANNO, ya que todos los datos son del año 2025.
+df_notas = df_notas[["MATRICULA", "CURSO", "EVALUACION", "MATERIA", "NOTA"]] # Quitamos CL_MATERIA (va antes de NOTA) debido a que no aporta nada útil
+df_matriculas = df_matriculas[["MATRICULA", "ETAPA", "ESTUDIOS", "GRUPO"]] # Quitamos ESTADOMATRICULA (al final) ya que no aporta nada
+df_faltas = df_faltas[["EXPEDIENTE", "FECHA_FALTA", "ESTUDIOS", "GRUPO", "MATERIA", "AUSENCIAS", "RETRASOS", "JUSTIFICADAS"]]
 df_materias = df_materias[["CODIGO", "DESCRIPCION", "ABREVIATURA"]]
-df_unidades = df_unidades[["ANNO", "GRUPO", "ESTUDIO", "CURSO"]] # Opcional. Falta "TUTOR"
+df_unidades = df_unidades[["GRUPO", "ESTUDIO", "CURSO"]] # Opcional. Falta "TUTOR"
 
 # Limpiamos datos
 
 df_notas = df_notas[df_notas["EVALUACION"].isin(["1ª Evaluación", "2ª Evaluación"])] # Solo mostramos las dos primeras evaluaciones
 
-df_notas[["MATRICULA", "ANNO", "CL_MATERIA"]] = df_notas[["MATRICULA", "ANNO", "CL_MATERIA"]].astype(int) # Mostramos estas dato numércios como INT
+df_notas[["MATRICULA"]] = df_notas[["MATRICULA"]].astype(int) # Mostramos estas dato numércios como INT
 
 # Creamos un marco para reemplazar las notas categóricas por numéricas.
 notas_categoricas = {

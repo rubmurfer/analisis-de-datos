@@ -15,9 +15,14 @@ df_faltas_matriculas = pd.merge(df_faltas, df_matriculas, on="ESTUDIOS", how="le
 # En datMaterias, el nombre de la materia se llama DESCRIPCION. En datFaltas, la misma se llama MATERIA.
 # He visto, por otro lado, que el CL_MATERIA de datNotas no coincide con el CODIGO de datMaterias
 
-# Formateamos algunos datos
+# ---------------------------------------------------------------------------------------------------------------
 
-df_notas_matriculas = df_notas_matriculas.drop(columns=(["ANNO_y"])).rename(columns={"ANNO_x": "ANNO"}) # Borramos la columa de ANNO para tener solo una
+# Creamos listados de los campos a utilizar para mostrar todas las opciones en el formulario HTML | En cascada
+
+lista_materias = df_notas_matriculas["MATERIA"].unique().tolist()
+lista_evaluaciones = df_notas_matriculas["EVALUACION"].unique().tolist()
+lista_grupos = df_notas_matriculas["GRUPO"].unique().tolist()
+
 
 
 # Establecemos las funciones para obtener el rendimiento.
@@ -40,4 +45,8 @@ def obtener_rendimiento_materia(evaluacion=None, curso=None, grupo=None): # Las 
         Porcentaje_Suspensos=("NOTA", lambda x: (x < 5).sum() / x.count() * 100)
     ).round(2)
 
+
     return df, resumen
+
+
+# En datNotas, NO debemos usar CL_Materia. Solo debemos relacionar Matrícula entre ficheros para ver las asignaturas que tiene cada alumna en base a su curso.

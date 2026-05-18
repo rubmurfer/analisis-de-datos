@@ -4,8 +4,33 @@
 
 {% block content %}
 
-  <div class="msg">
-    Hola, saludos a todos
+<!-- Hay que añadir dos formularios, uno para cada campo (Evaluación, Grupo) -->
+<!-- Hay que usar JS para hacerlo en cascada: https://www.w3schools.com/howto/howto_js_cascading_dropdown.asp -->
+
+{% for i in range(10) %}
+  {{ i * i }}
+{% endfor %}
+
+  <div class="form">
+    <form method="get">
+
+      <select name="evaluación">
+        {% for i in range(2) %}
+        <option value="">- Evaluación -</option>
+        <option value=1>{{ i }}ª Evaluación</option>
+        <option value=2>{{ i }}ª Evaluación</option>
+        {% endfor %}
+      </select>
+
+      <select name="grupo">
+        <option value="">- Grupo -</option>
+        <option value="a">Opción A</option>
+        <option value="b">Opción B</option>
+      </select>
+
+      <!-- Botón de envío -->
+      <button class="btn" type="submit">Enviar</button>
+    </form>
   </div>
 
 {% if resumen %}
