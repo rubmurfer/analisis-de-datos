@@ -85,11 +85,6 @@ tr:nth-child(even) {
 tr:hover {background: var(--fondo-tabla-hover); }
 tbody th { width: 300px; }
 
-.form, select {
-    display: grid;
-    gap: 12px;
-    max-width: 520px;
-}
 label { display: grid; gap: 6px; }
 input {
     padding: 10px;
@@ -126,4 +121,107 @@ input:focus { outline: none; border-color: var(--texto-footer); }
     border-left: 3px solid var(--msg-borde);
     padding: 10px 14px;
     border-radius: 0 6px 6px 0;
+}
+
+
+/* --- Formularios --- */
+
+.form {
+    padding: 16px 0;
+}
+
+.form form {
+    display: grid;
+    gap: 16px;
+    max-width: 560px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+}
+
+.form-group {
+    display: grid;
+    gap: 5px;
+}
+
+.form-group label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--texto-footer);
+}
+
+select {
+    width: 100%;
+    padding: 9px 34px 9px 11px;
+    border: 1px solid var(--input);
+    border-radius: 6px;
+    background-color: var(--fondo-main);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236e9aaa' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    appearance: none;
+    -webkit-appearance: none;
+    color: var(--texto-normal);
+    font-size: 14px;
+    cursor: pointer;
+    transition: border-color 0.15s;
+}
+
+select:focus {
+    outline: none;
+    border-color: var(--texto-footer);
+    box-shadow: 0 0 0 3px rgba(110, 154, 170, 0.15);
+}
+
+select:hover { border-color: var(--texto-footer); }
+
+/* --- Botón secundario (limpiar filtros) --- */
+
+.btn-ghost {
+    display: inline-block;
+    padding: 9px 14px;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--texto-footer);
+    border: 1px solid var(--input);
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: none;
+    transition: border-color 0.15s, color 0.15s;
+}
+.btn-ghost:hover {
+    border-color: var(--texto-footer);
+    color: var(--texto-normal);
+}
+
+/* --- Tags de filtros activos --- */
+
+.filtros-activos {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    padding: 3px 9px;
+    border-radius: 99px;
+    background: var(--fondo-tabla-1);
+    color: var(--fondo-cabeceras);
+    border: 1px solid var(--input);
+}
+
+.tag-label {
+    font-size: 11px;
+    color: var(--texto-footer);
+    margin-right: 2px;
 }

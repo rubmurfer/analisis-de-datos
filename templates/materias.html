@@ -4,34 +4,66 @@
 
 {% block content %}
 
-<!-- Hay que añadir dos formularios, uno para cada campo (Evaluación, Grupo) -->
+<!-- Creamos tres formularios, uno para cada campo (Evaluación, Curso, y Grupo) -->
 <!-- Hay que usar JS para hacerlo en cascada: https://www.w3schools.com/howto/howto_js_cascading_dropdown.asp -->
 
-{% for i in range(10) %}
-  {{ i * i }}
-{% endfor %}
+<div class="form">
+  <form method="get">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="evaluacion">Evaluación</label>
 
-  <div class="form">
-    <form method="get">
+        <!-- Evaluación -->
+        <select id="evaluacion" name="evaluacion">
+          <option value="">— Evaluación —</option>
+          {% for e in evaluaciones %}
+            <option value="{{ e }}" {% if e == sel_evaluacion %}selected{% endif %}>
+              {{ e }}
+            </option>
+          {% endfor %}
+        </select>
 
-      <select name="evaluación">
-        {% for i in range(2) %}
-        <option value="">- Evaluación -</option>
-        <option value=1>{{ i }}ª Evaluación</option>
-        <option value=2>{{ i }}ª Evaluación</option>
-        {% endfor %}
-      </select>
+      </div>
+      <div class="form-group">
+        <label for="curso">Curso</label>
 
-      <select name="grupo">
-        <option value="">- Grupo -</option>
-        <option value="a">Opción A</option>
-        <option value="b">Opción B</option>
-      </select>
+        <!-- Curso -->
+        <select id="curso" name="curso">
+          <option value="">— Curso —</option>
+          {% for c in cursos %}
+            <option value="{{ c }}" {% if c == sel_curso %}selected{% endif %}>
+              {{ c }}
+            </option>
+          {% endfor %}
+        </select>
 
-      <!-- Botón de envío -->
-      <button class="btn" type="submit">Enviar</button>
-    </form>
-  </div>
+      </div>
+      <div class="form-group">
+        <label for="grupo">Grupo</label>
+
+        <!-- Grupo -->
+        <select id="grupo" name="grupo">
+          <option value="">— Grupo —</option>
+          {% for g in grupos %}
+            <option value="{{ g }}" {% if g == sel_grupo %}selected{% endif %}>
+              {{ g }}
+            </option>
+          {% endfor %}
+        </select>
+
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn" type="submit">Filtrar</button>
+      <a class="btn-ghost" href="{{ url_for('materias') }}">Limpiar filtros</a>
+    </div>
+  </form>
+</div>
+
+
+
+
+
 
 {% if resumen %}
   <div>{{ resumen | safe }}</div>

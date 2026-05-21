@@ -19,9 +19,10 @@ df_faltas_matriculas = pd.merge(df_faltas, df_matriculas, on="ESTUDIOS", how="le
 
 # Creamos listados de los campos a utilizar para mostrar todas las opciones en el formulario HTML | En cascada
 
-lista_materias = df_notas_matriculas["MATERIA"].unique().tolist()
 lista_evaluaciones = df_notas_matriculas["EVALUACION"].unique().tolist()
+lista_cursos = df_notas_matriculas["CURSO"].unique().tolist()
 lista_grupos = df_notas_matriculas["GRUPO"].unique().tolist()
+#lista_materias = df_notas_matriculas["MATERIA"].unique().tolist()
 
 
 
