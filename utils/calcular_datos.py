@@ -32,7 +32,6 @@ materias_lista_grupos = df_notas_matriculas["GRUPO"].unique().tolist()
 #lista_materias = df_notas_matriculas["MATERIA"].unique().tolist()
 
 # /grupos
-
 grupos_lista_evaluaciones = df_notas_matriculas["EVALUACION"].unique().tolist()
 grupos_lista_cursos = df_notas_matriculas["CURSO"].unique().tolist()
 grupos_lista_materias = df_notas_matriculas["MATERIA"].unique().tolist()
@@ -77,7 +76,6 @@ def obtener_rendimiento_grupo(evaluacion=None, curso=None, materia=None):
     ).round(2)
     resumen["Peor Materia"] = peores_materias
 
-
     return df, resumen
 
 # En datNotas, NO debemos usar CL_Materia. Solo debemos relacionar Matrícula entre ficheros para ver las asignaturas que tiene cada alumna en base a su curso.
@@ -87,6 +85,7 @@ def obtener_faltas(fechas=None, grupo=None, estudios=None, materia=None):
 
     return df
 
+# ---------------------------------------------------------------------------------------------------------------
 
 def grafica_materias_aprobados(resumen):
     materias = resumen.index.tolist()
@@ -95,7 +94,7 @@ def grafica_materias_aprobados(resumen):
     altura = max(6, len(materias) * 0.4) # Calculamos la altura dinámicamente
     figura, ejes = plt.subplots(figsize=(10, altura))
 
-    ejes.barh(materias, p_aprobados, color="#4e8498", edgecolor="none")
+    ejes.barh(materias, p_aprobados, color="#4e9898", edgecolor="none")
     ejes.set_xlabel("% Aprobados", color="#2a3f4a")
     figura.subplots_adjust(left=0.35)
 
@@ -110,8 +109,8 @@ def grafica_materias_aprobados(resumen):
     ejes.tick_params(colors="#2a3f4a")  # color del texto de los ejes
 
     # Creamos una imagen en RAM y la pasamos a Base64 para inyectarla en HTML
-    buf = io.BytesIO()
-    figura.savefig(buf, format="png", bbox_inches="tight")
+    buf = io.BytesIO() # Creamos un buffer en memoria.
+    figura.savefig(buf, format="png", bbox_inches="tight") # La idea es que la imagen de la gráfica se quede en memoria (sin descargarse localmente)
     buf.seek(0)
     imagen = base64.b64encode(buf.read()).decode("utf-8")
 
@@ -125,10 +124,10 @@ def grafica_grupos(resumen):
     p_aprobados = resumen["Porcentaje_Aprobados"].tolist()
 
     altura = max(6, len(medias) * 0.4) # Calculamos la altura dinámicamente
-    figura, (ejes1, ejes2) = plt.subplots(1, 2, figsize=(14, altura))
+    figura, (ejes1, ejes2) = plt.subplots(1, 2, figsize=(14, altura)) # Creamos dos ejems para mostrar las dos gráficas de manera pareja.
 
     ejes1.barh(grupos, p_aprobados, color="#4e8498", edgecolor="none")
-    ejes2.barh(grupos, medias, color="#4e8498", edgecolor="none")
+    ejes2.barh(grupos, medias, color="#4e6498", edgecolor="none")
     ejes1.set_xlabel("% Aprobados", color="#2a3f4a")
     ejes2.set_xlabel("Medias por grupo", color="#2a3f4a")
 
@@ -137,7 +136,7 @@ def grafica_grupos(resumen):
     ejes1.set_xlim(0, 100)
     ejes2.set_xlim(0, 10)
 
-    # Estilo
+    # Estilo # Debemos configurarlo todo a pares.
 
     figura.patch.set_facecolor("#f7fbfd")
     ejes1.set_facecolor("#f7fbfd")
@@ -145,7 +144,7 @@ def grafica_grupos(resumen):
     
     ejes1.set_title("Materias por porcentaje de aprobados", color="#2a3f4a")
     ejes2.set_title("Media del alumnado por grupo", color="#2a3f4a")
-    ejes1.tick_params(colors="#2a3f4a")  # color del texto de los ejes
+    ejes1.tick_params(colors="#2a3f4a") # color del texto de los ejes
     ejes2.tick_params(colors="#2a3f4a")
 
     ejes2.set_yticks([]) # Oculto los nombres de los cursos en el segundo eje

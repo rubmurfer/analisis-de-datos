@@ -6,4 +6,21 @@
 
 <!-- fecha_inicio, fecha_fin, grupo, materia -->
 
+<!-- Resumen -->
+{% if resumen %}
+  <div>{{ resumen | safe }}</div>
+{% endif %}
+
+<!-- Gráfica -->
+{% if grafica %}
+  <div class="grafica">
+    <img src="data:image/png;base64,{{ grafica }}" alt="Aprobados y Medias">
+  </div>
+{% endif %}
+
+<!-- Datos DF -->
+{% if datos %}
+  <div>{{ datos | safe }}</div>
+{% endif %}
+
 {% endblock %}
