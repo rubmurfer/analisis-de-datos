@@ -46,15 +46,17 @@ def obtener_rendimiento_materia(evaluacion=None, curso=None, grupo=None): # Las 
         Porcentaje_Suspensos=("NOTA", lambda x: (x < 5).sum() / x.count() * 100)
     ).round(2)
 
-
     return df, resumen
 
+
+def obtener_rendimiento_grupo():
+    pass
 
 # En datNotas, NO debemos usar CL_Materia. Solo debemos relacionar Matrícula entre ficheros para ver las asignaturas que tiene cada alumna en base a su curso.
 
 # Gráfica de Matplotlib
 import matplotlib
-matplotlib.use("Agg")
+matplotlib.use("Agg") # Evitamos que Matplotlibe muestra la gráfica en terminal
 import matplotlib.pyplot as plt
 import base64, io
 

@@ -14,8 +14,8 @@
         <h1 class="brand"><a href="{{ url_for('inicio') }}">Inicio</a></h1>
         <nav class="nav">
           <a href="{{ url_for('materias') }}">Materias</a>
-          <a href="#">Grupos</a>
-          <a href="#">Absentismo</a>
+          <a href="{{ url_for('grupos') }}">Grupos</a>
+          <a href="{{ url_for('absentismo') }}">Absentismo</a>
         </nav>
     </div>
   </header>
@@ -34,7 +34,9 @@
 
   <footer class="footer">
     <div class="container">
-      <small>&copy; 2026 · Proyecto Final · Rubén Murcia Fernández</small>
+      {% if copy %}
+      <small>&copy; {{ copy }} </small>
+      {% endif %}
     </div>
   </footer>
 </body>
