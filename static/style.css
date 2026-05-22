@@ -81,8 +81,19 @@ td {
     color: var(--texto-normal);
 }
 tr:nth-child(even) { background: var(--fondo-tabla-2); }
+table th { white-space: nowrap; }
 tr:hover {background: var(--fondo-tabla-hover); }
-tbody th { width: 300px; }
+
+table.resumen tbody th {
+    width: 300px;
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+table.grupos tbody th { width: 130px; }
+table.datos tbody th { width: 300px; }
 
 input {
     padding: 10px;

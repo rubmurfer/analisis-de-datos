@@ -2,10 +2,14 @@
 
 from flask import Flask, render_template, request
 from utils.calcular_datos import (
-    pd, obtener_rendimiento_materia,
-    lista_evaluaciones, lista_grupos, lista_cursos,
+    pd, obtener_rendimiento_materia, obtener_rendimiento_grupo, obtener_faltas,
+
+    materias_lista_evaluaciones, materias_lista_grupos, materias_lista_cursos,
+    grupos_lista_evaluaciones, grupos_lista_cursos, grupos_lista_materias,
+
     grafica_aprobados
 )
+
 app = Flask(__name__) # Apartado de Web con Flask
 
 @app.context_processor # Creamos variables globales para todas las páginas. Podríamos repetir la variable de copy encada web, pero eso sería más repetitivo.
@@ -14,6 +18,7 @@ def variables_globales():
         "copy": "2026 · Proyecto de Análisis de Datos Académicos · Rubén Murcia Fernández"
     }
 
+head_datos_resumen = 50 # Número de filas mostradas por defecto
 @app.route("/")
 def inicio():
     msg = "Bienvenido a mi página Web. Aquí podrás acceder a los datos del centro."
@@ -69,7 +74,7 @@ def materias(): # Rendimiento por Materia
         # Si los tres valores son None, la los valores no se muestras
         # Es decir: lo damos solo se muestran cuando al menos unos de los campos del formulario haya sido elegido
 
-        head_datos_resumen = 50 # Número de filas mostradas por defecto
+        
 
         # Generamos la gráfica basada en resumen
         grafica = grafica_aprobados(
@@ -94,9 +99,9 @@ def materias(): # Rendimiento por Materia
         resumen=html_resumen,
 
         # Filtros ["GET"]
-        evaluaciones=lista_evaluaciones,
-        grupos=lista_grupos,
-        cursos=lista_cursos,
+        evaluaciones=materias_lista_evaluaciones,
+        grupos=materias_lista_grupos,
+        cursos=materias_lista_cursos,
 
         sel_evaluacion=evaluacion,
         sel_curso=curso,
@@ -106,14 +111,45 @@ def materias(): # Rendimiento por Materia
         )
 
 @app.route("/grupos", methods = ["GET"])
-def grupos():
+def grupos(): # Rendimiento por Grupo
+
+    columnas_resumen = {
+        "Porcentaje_Aprobados": "% Aprobados",
+        "Porcentaje_Suspensos": "% Suspensos"
+    }
+
+    df, resumen = obtener_rendimiento_grupo()
+    html_datos = (
+        df.head(head_datos_resumen)
+        .to_html(classes="datos", index=False, border=0)
+    )
+    html_resumen = (
+        resumen.rename(columns=columnas_resumen).head(head_datos_resumen)
+        .to_html(classes="resumen grupos", index=True, border=0)
+    )
+
     return render_template(
         "grupos.html",
-        title = "Grupos"
+        title = "Grupos",
+        datos = html_datos,
+        resumen=html_resumen
     )
 
 @app.route("/absentismo", methods = ["GET"])
-def absentismo():
+def absentismo(): # Faltas, retrasos, etc
+
+    columnas = {
+        "EXPEDIENTE":  "Expediente",
+        "FECHA_FALTA": "Fecha de Falta",
+        "ESTUDIOS":    "Estudios",
+        "GRUPO":       "Grupo",
+        "MATERIA":     "Materia",
+        "AUSENCIAS":   "Ausencias",
+        "RETRASOS":    "Retrasos",
+        "JUSTIFICADAS":"Justificadas",
+        "ETAPA":       "Etapa"
+    }
+
     return render_template(
         "absentismo.html",
         title = "Absentismo"

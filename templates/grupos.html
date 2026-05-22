@@ -6,4 +6,15 @@
 
 <!-- evaluacion, estudios, materia -->
 
+<!-- Resumen -->
+{% if resumen %}
+  <div>{{ resumen | safe }}</div>
+{% endif %}
+
+
+<!-- Datos DF -->
+{% if datos %}
+  <div>{{ datos | safe }}</div>
+{% endif %}
+
 {% endblock %}
