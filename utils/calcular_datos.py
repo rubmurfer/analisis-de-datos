@@ -51,3 +51,39 @@ def obtener_rendimiento_materia(evaluacion=None, curso=None, grupo=None): # Las 
 
 
 # En datNotas, NO debemos usar CL_Materia. Solo debemos relacionar Matrícula entre ficheros para ver las asignaturas que tiene cada alumna en base a su curso.
+
+# Gráfica de Matplotlib
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import base64, io
+
+def grafica_aprobados(resumen):
+    materias = resumen.index.tolist()
+    p_aprobados = resumen["Porcentaje_Aprobados"].tolist()
+
+    altura = max(6, len(materias) * 0.4) # Calculamos la altura dinámicamente
+    figura, ejes = plt.subplots(figsize=(10, altura))
+
+    ejes.barh(materias, p_aprobados, color="#4e8498", edgecolor="none")
+    ejes.set_xlabel("% Aprobados", color="#2a3f4a")
+    figura.subplots_adjust(left=0.35)
+
+    ejes.set_xlim(0, 100)
+
+    # Estilo
+
+    figura.patch.set_facecolor("#f7fbfd")
+    ejes.set_facecolor("#f7fbfd")
+    
+    ejes.set_title("Materias por porcentaje de aprobados", color="#2a3f4a")
+    ejes.tick_params(colors="#2a3f4a")  # color del texto de los ejes
+
+    # Creamos una imagen en RAM y la pasamos a Base64 para inyectarla en HTML
+    buf = io.BytesIO()
+    figura.savefig(buf, format="png", bbox_inches="tight")
+    buf.seek(0)
+    imagen = base64.b64encode(buf.read()).decode("utf-8")
+
+    plt.close(figura) # LIberamos memoria del servidor
+    return imagen

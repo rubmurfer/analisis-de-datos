@@ -5,7 +5,6 @@
 {% block content %}
 
 <!-- Creamos tres formularios, uno para cada campo (Evaluación, Curso, y Grupo) -->
-<!-- Hay que usar JS para hacerlo en cascada: https://www.w3schools.com/howto/howto_js_cascading_dropdown.asp -->
 
 <div class="form">
   <form method="get">
@@ -55,20 +54,24 @@
     </div>
     <div class="actions">
       <button class="btn" type="submit">Filtrar</button>
-      <a class="btn-ghost" href="{{ url_for('materias') }}">Limpiar filtros</a>
+      <a class="btn-limpiar" href="{{ url_for('materias') }}">Limpiar filtros</a>
     </div>
   </form>
 </div>
 
-
-
-
-
-
+<!-- Resumen -->
 {% if resumen %}
   <div>{{ resumen | safe }}</div>
 {% endif %}
 
+<!-- Gráfica -->
+{% if grafica %}
+  <div class="grafica">
+    <img src="data:image/png;base64,{{ grafica }}" alt="Aprobados por materia">
+  </div>
+{% endif %}
+
+<!-- Datos DF -->
 {% if datos %}
   <div>{{ datos | safe }}</div>
 {% endif %}
