@@ -6,11 +6,70 @@
 
 <!-- evaluacion, estudios, materia -->
 
+ <div class="form">
+  <form method="get">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="evaluacion">Evaluación</label>
+
+        <!-- Evaluación -->
+        <select id="evaluacion" name="evaluacion">
+          <option value="">— Evaluación —</option>
+          {% for e in evaluaciones %}
+            <option value="{{ e }}" {% if e == sel_evaluacion %}selected{% endif %}>
+              {{ e }}
+            </option>
+          {% endfor %}
+        </select>
+
+      </div>
+      <div class="form-group">
+        <label for="curso">Curso</label>
+
+        <!-- Curso -->
+        <select id="curso" name="curso">
+          <option value="">— Curso —</option>
+          {% for c in cursos %}
+            <option value="{{ c }}" {% if c == sel_curso %}selected{% endif %}>
+              {{ c }}
+            </option>
+          {% endfor %}
+        </select>
+
+      </div>
+      <div class="form-group">
+        <label for="grupo">Materia</label>
+
+        <!-- Materia -->
+        <select id="materia" name="materia">
+        <option value="">— Materia —</option>
+        {% for m in materias %}
+            <option value="{{ m }}" {% if m == sel_materia %}selected{% endif %}>
+            {{ m }}
+            </option>
+        {% endfor %}
+        </select>
+
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn" type="submit">Filtrar</button>
+      <a class="btn-limpiar" href="{{ url_for('grupos') }}">Limpiar filtros</a>
+    </div>
+  </form>
+</div>
+
 <!-- Resumen -->
 {% if resumen %}
   <div>{{ resumen | safe }}</div>
 {% endif %}
 
+<!-- Gráfica -->
+{% if grafica %}
+  <div class="grafica">
+    <img src="data:image/png;base64,{{ grafica }}" alt="Aprobados por materia">
+  </div>
+{% endif %}
 
 <!-- Datos DF -->
 {% if datos %}

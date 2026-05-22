@@ -7,7 +7,7 @@ from utils.calcular_datos import (
     materias_lista_evaluaciones, materias_lista_grupos, materias_lista_cursos,
     grupos_lista_evaluaciones, grupos_lista_cursos, grupos_lista_materias,
 
-    grafica_aprobados
+    grafica_materias_aprobados, grafica_grupos
 )
 
 app = Flask(__name__) # Apartado de Web con Flask
@@ -74,10 +74,8 @@ def materias(): # Rendimiento por Materia
         # Si los tres valores son None, la los valores no se muestras
         # Es decir: lo damos solo se muestran cuando al menos unos de los campos del formulario haya sido elegido
 
-        
-
         # Generamos la gráfica basada en resumen
-        grafica = grafica_aprobados(
+        grafica = grafica_materias_aprobados(
             resumen.sort_values("Porcentaje_Aprobados")
             .head(head_datos_resumen))
 
@@ -113,26 +111,71 @@ def materias(): # Rendimiento por Materia
 @app.route("/grupos", methods = ["GET"])
 def grupos(): # Rendimiento por Grupo
 
+    columnas = { # Cambiamos los nombres de los datos para hacerlos más visuales en el display de la web
+        # df_notas
+        "MATRICULA": "Matrícula",
+        "CURSO": "Curso",
+        "EVALUACION": "Evaluación",
+        "MATERIA": "Materia",
+        "NOTA": "Nota",
+
+        # df_matriculas
+        "ETAPA": "Etapa",
+        "ESTUDIOS": "Estudios",
+        "GRUPO": "Grupo"
+        }
+
     columnas_resumen = {
         "Porcentaje_Aprobados": "% Aprobados",
         "Porcentaje_Suspensos": "% Suspensos"
     }
 
-    df, resumen = obtener_rendimiento_grupo()
-    html_datos = (
-        df.head(head_datos_resumen)
-        .to_html(classes="datos", index=False, border=0)
+    evaluacion = request.args.get("evaluacion") or None
+    curso = request.args.get("curso") or None
+    materia = request.args.get("materia") or None
+
+    # Establecemos valores None por defecto
+    html_datos = None
+    html_resumen = None
+    grafica = None
+
+    df, resumen = obtener_rendimiento_grupo(
+        evaluacion=evaluacion,
+        curso=curso,
+        materia=materia
     )
-    html_resumen = (
-        resumen.rename(columns=columnas_resumen).head(head_datos_resumen)
-        .to_html(classes="resumen grupos", index=True, border=0)
-    )
+
+    if evaluacion or curso or materia:
+
+        
+        html_datos = (
+            df.rename(columns=columnas).head(head_datos_resumen)
+            .to_html(classes="datos", index=False, border=0)
+        )
+        html_resumen = (
+            resumen.rename(columns=columnas_resumen).head(head_datos_resumen)
+            .to_html(classes="resumen grupos", index=True, border=0)
+        )
+
+        grafica = grafica_grupos(
+            resumen.sort_values("Porcentaje_Aprobados")
+            .head(head_datos_resumen))
 
     return render_template(
         "grupos.html",
         title = "Grupos",
         datos = html_datos,
-        resumen=html_resumen
+        resumen=html_resumen,
+
+        evaluaciones=grupos_lista_evaluaciones,
+        cursos=grupos_lista_cursos,
+        materias=grupos_lista_materias,
+
+        sel_evaluacion=evaluacion,
+        sel_curso=curso,
+        sel_materia=materia,
+
+        grafica=grafica
     )
 
 @app.route("/absentismo", methods = ["GET"])

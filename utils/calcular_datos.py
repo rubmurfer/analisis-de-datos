@@ -1,6 +1,6 @@
 # utils/calcular_datos.py
 
-from utils.carga_datos import pd, df_unidades, df_faltas, df_materias, df_matriculas, df_notas
+from utils.carga_datos import pd, np, df_unidades, df_faltas, df_materias, df_matriculas, df_notas
 
 # Gráficas de Matplotlib
 import matplotlib
@@ -88,7 +88,7 @@ def obtener_faltas(fechas=None, grupo=None, estudios=None, materia=None):
     return df
 
 
-def grafica_aprobados(resumen):
+def grafica_materias_aprobados(resumen):
     materias = resumen.index.tolist()
     p_aprobados = resumen["Porcentaje_Aprobados"].tolist()
 
@@ -116,4 +116,45 @@ def grafica_aprobados(resumen):
     imagen = base64.b64encode(buf.read()).decode("utf-8")
 
     plt.close(figura) # LIberamos memoria del servidor
+    return imagen
+
+
+def grafica_grupos(resumen):
+    grupos = resumen.index.tolist()
+    medias = resumen["Media"].tolist()
+    p_aprobados = resumen["Porcentaje_Aprobados"].tolist()
+
+    altura = max(6, len(medias) * 0.4) # Calculamos la altura dinámicamente
+    figura, (ejes1, ejes2) = plt.subplots(1, 2, figsize=(14, altura))
+
+    ejes1.barh(grupos, p_aprobados, color="#4e8498", edgecolor="none")
+    ejes2.barh(grupos, medias, color="#4e8498", edgecolor="none")
+    ejes1.set_xlabel("% Aprobados", color="#2a3f4a")
+    ejes2.set_xlabel("Medias por grupo", color="#2a3f4a")
+
+    figura.subplots_adjust(left=0.35)
+
+    ejes1.set_xlim(0, 100)
+    ejes2.set_xlim(0, 10)
+
+    # Estilo
+
+    figura.patch.set_facecolor("#f7fbfd")
+    ejes1.set_facecolor("#f7fbfd")
+    ejes2.set_facecolor("#f7fbfd")
+    
+    ejes1.set_title("Materias por porcentaje de aprobados", color="#2a3f4a")
+    ejes2.set_title("Media del alumnado por grupo", color="#2a3f4a")
+    ejes1.tick_params(colors="#2a3f4a")  # color del texto de los ejes
+    ejes2.tick_params(colors="#2a3f4a")
+
+    ejes2.set_yticks([]) # Oculto los nombres de los cursos en el segundo eje
+
+    # Imagen
+    buf = io.BytesIO()
+    figura.savefig(buf, format="png", bbox_inches="tight")
+    buf.seek(0)
+    imagen = base64.b64encode(buf.read()).decode("utf-8")
+
+    plt.close(figura)
     return imagen
