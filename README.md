@@ -1,5 +1,5 @@
 # Proyecto de Análisis de Datos y Aplicación Web
-> Hecho por **Rubén Murcia**
+> Hecho por **Rubén Murcia** ([GitHub](https://github.com/rubmurfer/analisis-de-datos))
 
 ## Contenido
 - Introducción
@@ -40,9 +40,10 @@ Las librerías principales son las siguientes:
 Los pasos de instalación y arranque son los siguientes:
 
 1. Descargar de este repositorio (preferiblemente desde [GitHub](https://github.com/rubmurfer/analisis-de-datos)).
-2. Instalar las dependencias en un entorno controlado con `pip install -r requirements.txt`.
-3. Ejecutar el fichero llamado `app.py`.
-4. Acceder al sitio web local desde la **URL**: `http://127.0.0.1:5000/` o `localhost:5000`.
+2. Para crear un **entorno virtual** usamos: `python -m venv .venv` en la carpeta del proyecto -> `source .venv/bin/activate`(Linux / MAC) o `.venv\Scripts\activate`(Windows).
+3. Instalar las dependencias en un entorno controlado con `pip install -r requirements.txt`.
+4. Arrancar la aplicación con `python app.py` desde la carpeta del proyecto.
+5. Acceder al sitio web local desde la **URL**: `http://127.0.0.1:5000/` o `localhost:5000`.
 
 ---
 # Estructura de carpetas y ficheros
