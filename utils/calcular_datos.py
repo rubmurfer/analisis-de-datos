@@ -2,12 +2,6 @@
 
 from utils.carga_datos import pd, np, df_unidades, df_faltas, df_materias, df_matriculas, df_notas
 
-# Gráficas de Matplotlib
-import matplotlib
-matplotlib.use("Agg") # Evitamos que Matplotlibe muestra la gráfica en terminal
-import matplotlib.pyplot as plt
-import base64, io
-
 # Relacionamos los Datasets por campos comúnes
 
 df_notas_matriculas = pd.merge(df_notas, df_matriculas, on="MATRICULA", how="left")
@@ -35,6 +29,27 @@ materias_lista_grupos = df_notas_matriculas["GRUPO"].unique().tolist()
 grupos_lista_evaluaciones = df_notas_matriculas["EVALUACION"].unique().tolist()
 grupos_lista_cursos = df_notas_matriculas["CURSO"].unique().tolist()
 grupos_lista_materias = df_notas_matriculas["MATERIA"].unique().tolist()
+
+# /absentismo
+absentismo_lista_grupos = df_faltas_matriculas["GRUPO"].unique().tolist()
+absentismo_lista_estudios = df_faltas_matriculas["ESTUDIOS"].unique().tolist()
+absentismo_lista_materias = df_faltas_matriculas["MATERIA"].unique().tolist()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Establecemos las funciones para obtener el rendimiento.
 def obtener_rendimiento_materia(evaluacion=None, curso=None, grupo=None): # Las parámetros de las funcionas son opcionales dentro del formulario web
@@ -80,80 +95,42 @@ def obtener_rendimiento_grupo(evaluacion=None, curso=None, materia=None):
 
 # En datNotas, NO debemos usar CL_Materia. Solo debemos relacionar Matrícula entre ficheros para ver las asignaturas que tiene cada alumna en base a su curso.
 
-def obtener_faltas(fechas=None, grupo=None, estudios=None, materia=None):
+def obtener_faltas(fecha_inicio=None, fecha_fin=None, grupo=None, estudios=None, materia=None):
     df = df_faltas_matriculas.copy()
 
-    return df
+    # Filtros
+    if fecha_inicio is not None: df = df[df["FECHA_FALTA"] >= fecha_inicio]
+    if fecha_fin is not None: df = df[df["FECHA_FALTA"] <= fecha_fin]
 
-# ---------------------------------------------------------------------------------------------------------------
+    if grupo is not None: df = df[df["GRUPO"] == grupo]
+    if estudios is not None: df = df[df["ESTUDIOS"] == estudios]
+    if materia is not None: df = df[df["MATERIA"] == materia]
 
-def grafica_materias_aprobados(resumen):
-    materias = resumen.index.tolist()
-    p_aprobados = resumen["Porcentaje_Aprobados"].tolist()
-
-    altura = max(6, len(materias) * 0.4) # Calculamos la altura dinámicamente
-    figura, ejes = plt.subplots(figsize=(10, altura))
-
-    ejes.barh(materias, p_aprobados, color="#4e9898", edgecolor="none")
-    ejes.set_xlabel("% Aprobados", color="#2a3f4a")
-    figura.subplots_adjust(left=0.35)
-
-    ejes.set_xlim(0, 100)
-
-    # Estilo
-
-    figura.patch.set_facecolor("#f7fbfd")
-    ejes.set_facecolor("#f7fbfd")
+    # Métricas # Creamos tres agrupaciones. 
+    # Total de ausencias, total de retrasos, justificadas, no justificadas estimadas, faltas por grupo, faltas por materia y faltas por matrícula
     
-    ejes.set_title("Materias por porcentaje de aprobados", color="#2a3f4a")
-    ejes.tick_params(colors="#2a3f4a")  # color del texto de los ejes
+    resumen_grupo = df.groupby("GRUPO").agg(
+        Ausencias=("AUSENCIAS", lambda x: x.sum()),
+        Retrasos=("RETRASOS", lambda x: x.sum()),
+        Justificadas=("JUSTIFICADAS", lambda x: x.sum())
+    )
+    resumen_materia = df.groupby("MATERIA").agg(
+        Ausencias=("AUSENCIAS", lambda x: x.sum()),
+        Retrasos=("RETRASOS", lambda x: x.sum()),
+        Justificadas=("JUSTIFICADAS", lambda x: x.sum())
+    )
+    resumen_matricula = df.groupby("EXPEDIENTE").agg(
+        Ausencias=("AUSENCIAS", lambda x: x.sum()),
+        Retrasos=("RETRASOS", lambda x: x.sum()),
+        Justificadas=("JUSTIFICADAS", lambda x: x.sum())
+    )
 
-    # Creamos una imagen en RAM y la pasamos a Base64 para inyectarla en HTML
-    buf = io.BytesIO() # Creamos un buffer en memoria.
-    figura.savefig(buf, format="png", bbox_inches="tight") # La idea es que la imagen de la gráfica se quede en memoria (sin descargarse localmente)
-    buf.seek(0)
-    imagen = base64.b64encode(buf.read()).decode("utf-8")
-
-    plt.close(figura) # LIberamos memoria del servidor
-    return imagen
+    # Creamos una variable total para cada agrupación
+    resumen_grupo["TOTAL"] = resumen_grupo["Ausencias"] + resumen_grupo["Retrasos"]
+    resumen_materia["TOTAL"] = resumen_materia["Ausencias"] + resumen_materia["Retrasos"]
+    resumen_matricula["TOTAL"] = resumen_matricula["Ausencias"] + resumen_matricula["Retrasos"]
 
 
-def grafica_grupos(resumen):
-    grupos = resumen.index.tolist()
-    medias = resumen["Media"].tolist()
-    p_aprobados = resumen["Porcentaje_Aprobados"].tolist()
+    return df, resumen_grupo, resumen_materia, resumen_matricula
 
-    altura = max(6, len(medias) * 0.4) # Calculamos la altura dinámicamente
-    figura, (ejes1, ejes2) = plt.subplots(1, 2, figsize=(14, altura)) # Creamos dos ejems para mostrar las dos gráficas de manera pareja.
 
-    ejes1.barh(grupos, p_aprobados, color="#4e8498", edgecolor="none")
-    ejes2.barh(grupos, medias, color="#4e6498", edgecolor="none")
-    ejes1.set_xlabel("% Aprobados", color="#2a3f4a")
-    ejes2.set_xlabel("Medias por grupo", color="#2a3f4a")
-
-    figura.subplots_adjust(left=0.35)
-
-    ejes1.set_xlim(0, 100)
-    ejes2.set_xlim(0, 10)
-
-    # Estilo # Debemos configurarlo todo a pares.
-
-    figura.patch.set_facecolor("#f7fbfd")
-    ejes1.set_facecolor("#f7fbfd")
-    ejes2.set_facecolor("#f7fbfd")
-    
-    ejes1.set_title("Materias por porcentaje de aprobados", color="#2a3f4a")
-    ejes2.set_title("Media del alumnado por grupo", color="#2a3f4a")
-    ejes1.tick_params(colors="#2a3f4a") # color del texto de los ejes
-    ejes2.tick_params(colors="#2a3f4a")
-
-    ejes2.set_yticks([]) # Oculto los nombres de los cursos en el segundo eje
-
-    # Imagen
-    buf = io.BytesIO()
-    figura.savefig(buf, format="png", bbox_inches="tight")
-    buf.seek(0)
-    imagen = base64.b64encode(buf.read()).decode("utf-8")
-
-    plt.close(figura)
-    return imagen

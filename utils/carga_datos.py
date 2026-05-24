@@ -47,4 +47,4 @@ df_notas["NOTA"] = df_notas["NOTA"].replace(notas_categoricas)
 df_notas["NOTA"] = pd.to_numeric(df_notas["NOTA"], errors="coerce")
 df_notas = df_notas.dropna(subset=["NOTA"]) # Borramos a todos los alumnos cuyas notas, a pesar de todo el limpiado, sigan singo NaN.
 
-
+df_faltas["FECHA_FALTA"] = pd.to_datetime(df_faltas["FECHA_FALTA"], errors="coerce")

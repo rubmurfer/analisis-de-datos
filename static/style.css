@@ -1,28 +1,28 @@
 /* Variables de Colores:  */
 
-:root{
-    --fondo-normal: #eaf2f5;
-    --fondo-cabeceras: #2e4e5e;
-    --texto-normal: #2a3f4a;
-    --texto-cabeceras: #f2f8fa;
+:root {
+    --fondo-normal: #f5f0e8;
+    --fondo-cabeceras: #2d4a45;
+    --texto-normal: #2c3a2e;
+    --texto-cabeceras: #f5f0e8;
 
     --brand-link: var(--texto-cabeceras);
-    --nav-link: #7aafc2;
+    --nav-link: #7ab8a0;
 
-    --fondo-main: #f7fbfd;
-    --texto-footer: #6e9aaa;
-    --borde-main: #c4d9e2;
+    --fondo-main: #faf7f2;
+    --texto-footer: #7a9e8a;
+    --borde-main: #d4c9a8;
 
-    --fondo-tabla-1: #d8eaf0;
-    --fondo-tabla-2: #f0f7fa;
-    --fondo-tabla-hover: #d8eaf0;
+    --fondo-tabla-1: #ede5d0;
+    --fondo-tabla-2: #f5f0e8;
+    --fondo-tabla-hover: #ede5d0;
 
-    --input: #b0cdd8;
-    --boton-hover: #223540;
-    --boton-2-hover: #4e8498;
+    --input: #c8bfa0;
+    --boton-hover: #1e3330;
+    --boton-2-hover: #9a6220;
 
-    --msg-fondo: #deeef4;
-    --msg-borde: #4e9ab2;
+    --msg-fondo: #faeeda;
+    --msg-borde: #ba7517;
 }
 
 /* Código:  */

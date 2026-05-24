@@ -6,9 +6,10 @@ from utils.calcular_datos import (
 
     materias_lista_evaluaciones, materias_lista_grupos, materias_lista_cursos,
     grupos_lista_evaluaciones, grupos_lista_cursos, grupos_lista_materias,
-
-    grafica_materias_aprobados, grafica_grupos
+    absentismo_lista_grupos, absentismo_lista_estudios, absentismo_lista_materias
 )
+
+from utils.crear_graficas import (grafica_materias_aprobados, grafica_grupos)
 
 app = Flask(__name__) # Apartado de Web con Flask
 
@@ -147,7 +148,6 @@ def grupos(): # Rendimiento por Grupo
 
     if evaluacion or curso or materia:
 
-        
         html_datos = (
             df.rename(columns=columnas).head(head_datos_resumen)
             .to_html(classes="datos", index=False, border=0)
@@ -193,9 +193,54 @@ def absentismo(): # Faltas, retrasos, etc
         "ETAPA":       "Etapa"
     }
 
+    fecha_inicio = request.args.get("fecha_inicio") or None
+    fecha_fin = request.args.get("fecha_fin") or None
+    grupo = request.args.get("grupo") or None
+    estudios = request.args.get("estudios") or None
+    materia = request.args.get("materia") or None
+
+    html_datos = None
+    html_resumen_grupo = None
+    html_resumen_materia = None
+    html_resumen_matricula = None
+    grafica = None
+
+    df, resumen_grupo, resumen_materia, resumen_matricula = obtener_faltas(
+        fecha_inicio=fecha_inicio,
+        fecha_fin=fecha_fin,
+        grupo=grupo,
+        estudios=estudios,
+        materia=materia
+    )
+
+    if fecha_inicio or fecha_fin or grupo or estudios or materia:
+        html_datos = (
+            df.rename(columns=columnas).head(head_datos_resumen)
+            .to_html(classes="datos", index=False, border=0)
+        )
+        html_resumen_grupo = resumen_grupo.to_html(classes="resumen", index=True, border=0)
+        html_resumen_materia = resumen_materia.to_html(classes="resumen", index=True, border=0)
+        html_resumen_matricula = resumen_matricula.to_html(classes="resumen", index=True, border=0)
+
     return render_template(
         "absentismo.html",
-        title = "Absentismo"
+        title = "Absentismo",
+        datos=html_datos,
+        resumen_grupo=html_resumen_grupo,
+        resumen_materia=html_resumen_materia,
+        resumen_matricula=html_resumen_matricula,
+
+        grupos=absentismo_lista_grupos,
+        estudios=absentismo_lista_estudios,
+        materias=absentismo_lista_materias,
+
+        sel_fecha_inicio=fecha_inicio,
+        sel_fecha_fin=fecha_fin,
+        sel_grupo=grupo,
+        sel_estudios=estudios,
+        sel_materia=materia,
+
+        grafica=grafica,
     )
 
 if __name__ == "__main__":
