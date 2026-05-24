@@ -1,6 +1,6 @@
 # utils/calcular_datos.py
 
-from utils.carga_datos import pd, np, df_unidades, df_faltas, df_materias, df_matriculas, df_notas
+from utils.carga_datos import pd, np, df_faltas, df_matriculas, df_notas # df_unidades y df_materias no se usan
 
 # Relacionamos los Datasets por campos comúnes
 
