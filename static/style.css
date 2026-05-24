@@ -286,3 +286,30 @@ select:hover { border-color: var(--texto-footer); }
     font-weight: 600;
     color: var(--texto-normal);
 }
+
+/* Tabs de las páginas */
+.tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--borde-main);
+}
+
+.tab-btn {
+    padding: 8px 16px;
+    border: none;
+    background: transparent;
+    color: var(--texto-footer);
+    cursor: pointer;
+    font-size: 14px;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+}
+
+.tab-btn.activo {
+    color: var(--texto-normal);
+    border-bottom: 2px solid var(--fondo-cabeceras);
+}
+
+.tab-contenido { display: none; }
+.tab-contenido.activo { display: block; }

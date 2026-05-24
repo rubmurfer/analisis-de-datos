@@ -59,21 +59,35 @@
   </form>
 </div>
 
-<!-- Resumen -->
 {% if resumen %}
-  <div>{{ resumen | safe }}</div>
-{% endif %}
+<div class="tabs">
+  <button class="tab-btn activo" onclick="cambiarTab('resumen', this)">Resumen</button>
+  <button class="tab-btn" onclick="cambiarTab('grafica', this)">Gráfica</button>
+  <button class="tab-btn" onclick="cambiarTab('datos', this)">Datos</button>
+</div>
 
-<!-- Gráfica -->
-{% if grafica %}
-  <div class="grafica">
-    <img src="data:image/png;base64,{{ grafica }}" alt="Aprobados y Medias">
-  </div>
-{% endif %}
+<div id="tab-resumen" class="tab-contenido activo">
+  {{ resumen | safe }}
+</div>
+<div id="tab-grafica" class="tab-contenido">
+  {% if grafica %}
+    <div class="grafica">
+      <img src="data:image/png;base64,{{ grafica }}" alt="Aprobados y Medias">
+    </div>
+  {% endif %}
+</div>
+<div id="tab-datos" class="tab-contenido">
+  {{ datos | safe }}
+</div>
 
-<!-- Datos DF -->
-{% if datos %}
-  <div>{{ datos | safe }}</div>
+<script>
+function cambiarTab(nombre, boton) {
+    document.querySelectorAll(".tab-contenido").forEach(d => d.classList.remove("activo"));
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("activo"));
+    document.getElementById("tab-" + nombre).classList.add("activo");
+    boton.classList.add("activo");
+}
+</script>
 {% endif %}
 
 {% endblock %}

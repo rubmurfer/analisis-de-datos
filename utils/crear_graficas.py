@@ -73,3 +73,88 @@ def grafica_grupos(resumen):
 
     plt.close(figura) # Cerramos el proceso para que la gráfica no se acumule tras cada GET.
     return imagen
+
+
+
+def grafica_absentismo_grupo(resumen_grupo):
+    grupos = resumen_grupo.index.tolist()
+    ausencias = resumen_grupo["Ausencias"].tolist()
+
+    altura = max(6, len(grupos) * 0.4)
+    figura, ejes = plt.subplots(figsize=(10, altura))
+
+    ejes.barh(grupos, ausencias, color="#4e9898", edgecolor="none")
+    ejes.set_xlabel("Ausencias por Grupo", color="#2a3f4a")
+    figura.subplots_adjust(left=0.35)
+
+    figura.patch.set_facecolor("#faf7f2")
+    ejes.set_facecolor("#faf7f2")
+    ejes.set_title("Ausencias por Grupo", color="#2a3f4a")
+    ejes.tick_params(colors="#2a3f4a")
+
+    buf = io.BytesIO()
+    figura.savefig(buf, format="png", bbox_inches="tight")
+    buf.seek(0)
+    imagen = base64.b64encode(buf.read()).decode("utf-8")
+    plt.close(figura)
+
+    return imagen
+
+def grafica_absentismo_materia(resumen_materia):
+    grupos = resumen_materia.index.tolist()
+    ausencias = resumen_materia["Ausencias"].tolist()
+
+    altura = max(6, len(grupos) * 0.4)
+    figura, ejes = plt.subplots(figsize=(10, altura))
+
+    ejes.barh(grupos, ausencias, color="#4e9898", edgecolor="none")
+    ejes.set_xlabel("Ausencias por Materia", color="#2a3f4a")
+    figura.subplots_adjust(left=0.35)
+
+    figura.patch.set_facecolor("#faf7f2")
+    ejes.set_facecolor("#faf7f2")
+    ejes.set_title("Ausencias por Materia", color="#2a3f4a")
+    ejes.tick_params(colors="#2a3f4a")
+
+    buf = io.BytesIO()
+    figura.savefig(buf, format="png", bbox_inches="tight")
+    buf.seek(0)
+    imagen = base64.b64encode(buf.read()).decode("utf-8")
+    plt.close(figura)
+
+    return imagen
+
+def grafica_absentismo_temporal(df):
+    por_mes = df.groupby(df["FECHA_FALTA"].dt.to_period("M"))["AUSENCIAS"].sum() # Aquí cortamos los días de todos los meses. No quedamos con algo como yyyy-mm
+
+    meses = [str(m) for m in por_mes.index.tolist()] # Dinñamicamente, pasamos los meses a listas que leerlos con Matplotlib.
+    ausencias = por_mes.tolist()
+
+    figura, ejes = plt.subplots(figsize=(12, 4))
+
+    ejes.plot(meses, ausencias, color="#4e9898", linewidth=2, marker="o")
+    ejes.set_xlabel("Mes", color="#2a3f4a")
+    ejes.set_ylabel("Ausencias", color="#2a3f4a")
+    ejes.set_title("Evolución de ausencias por mes", color="#2a3f4a")
+    ejes.tick_params(axis="x", rotation=45, colors="#2a3f4a")
+    ejes.tick_params(axis="y", colors="#2a3f4a")
+
+    figura.patch.set_facecolor("#faf7f2")
+    ejes.set_facecolor("#faf7f2")
+    figura.tight_layout()
+
+    buf = io.BytesIO()
+    figura.savefig(buf, format="png", bbox_inches="tight")
+    buf.seek(0)
+    imagen = base64.b64encode(buf.read()).decode("utf-8")
+    plt.close(figura)
+
+    return imagen
+
+# Creamos una función para exportar las cuatro gráficas a la vez.
+def graficas_absentismo(resumen_grupo, resumen_materias, df):
+    grafica_grupo = grafica_absentismo_grupo(resumen_grupo)
+    grafica_materias = grafica_absentismo_materia(resumen_materias)
+    grafica_temperal = grafica_absentismo_temporal(df)
+
+    return grafica_grupo, grafica_materias, grafica_temperal

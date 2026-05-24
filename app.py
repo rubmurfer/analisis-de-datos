@@ -9,7 +9,7 @@ from utils.calcular_datos import (
     absentismo_lista_grupos, absentismo_lista_estudios, absentismo_lista_materias
 )
 
-from utils.crear_graficas import (grafica_materias_aprobados, grafica_grupos)
+from utils.crear_graficas import (grafica_materias_aprobados, grafica_grupos, graficas_absentismo)
 
 app = Flask(__name__) # Apartado de Web con Flask
 
@@ -22,7 +22,7 @@ def variables_globales():
 head_datos_resumen = 50 # Número de filas mostradas por defecto
 @app.route("/")
 def inicio():
-    msg = "Bienvenido a mi página Web. Aquí podrás acceder a los datos del centro."
+    msg = "Bienvenido a mi Sitio Web. Aquí podrás acceder a los datos del Centro."
 
     resumen = obtener_resumen_inicio()
 
@@ -206,7 +206,10 @@ def absentismo(): # Faltas, retrasos, etc
     html_resumen_grupo = None
     html_resumen_materia = None
     html_resumen_matricula = None
-    grafica = None
+    
+    grafica_grupo = None
+    grafica_materia = None
+    grafica_temporal = None
 
     df, resumen_grupo, resumen_materia, resumen_matricula = obtener_faltas(
         fecha_inicio=fecha_inicio,
@@ -224,6 +227,12 @@ def absentismo(): # Faltas, retrasos, etc
         html_resumen_grupo = resumen_grupo.head(head_datos_resumen).to_html(classes="resumen", index=True, border=0)
         html_resumen_materia = resumen_materia.head(head_datos_resumen).to_html(classes="resumen", index=True, border=0)
         html_resumen_matricula = resumen_matricula.head(head_datos_resumen).to_html(classes="resumen", index=True, border=0)
+        
+        grafica_grupo, grafica_materia, grafica_temporal = graficas_absentismo(
+            resumen_grupo.head(head_datos_resumen),
+            resumen_materia.head(head_datos_resumen),
+            df
+        )
 
     return render_template(
         "absentismo.html",
@@ -243,7 +252,9 @@ def absentismo(): # Faltas, retrasos, etc
         sel_estudios=estudios,
         sel_materia=materia,
 
-        grafica=grafica,
+        grafica_grupo=grafica_grupo,
+        grafica_materia=grafica_materia,
+        grafica_temporal=grafica_temporal,
     )
 
 if __name__ == "__main__":

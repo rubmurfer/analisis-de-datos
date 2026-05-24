@@ -76,34 +76,54 @@
   </form>
 </div>
 
-
-
 <!-- Resúmenes -->
 {% if resumen_grupo %}
-  <h3>Por grupo</h3>
-  <div>{{ resumen_grupo | safe }}</div>
-{% endif %}
+<div class="tabs">
+  <button class="tab-btn activo" onclick="cambiarTab('res-grupo', this)">Por Grupo</button>
+  <button class="tab-btn" onclick="cambiarTab('res-materia', this)">Por Materia</button>
+  <button class="tab-btn" onclick="cambiarTab('res-matricula', this)">Por Matrícula</button>
+  <button class="tab-btn" onclick="cambiarTab('graficas', this)">Gráficas</button>
+  <button class="tab-btn" onclick="cambiarTab('datos', this)">Datos</button>
+</div>
 
-{% if resumen_materia %}
-  <h3>Por materia</h3>
-  <div>{{ resumen_materia | safe }}</div>
-{% endif %}
+<div id="tab-res-grupo" class="tab-contenido activo">
+  {{ resumen_grupo | safe }}
+</div>
+<div id="tab-res-materia" class="tab-contenido">
+  {{ resumen_materia | safe }}
+</div>
+<div id="tab-res-matricula" class="tab-contenido">
+  {{ resumen_matricula | safe }}
+</div>
+<div id="tab-graficas" class="tab-contenido">
+  {% if grafica_grupo %}
+    <div class="grafica">
+      <img src="data:image/png;base64,{{ grafica_grupo }}" alt="Ausencias por grupo">
+    </div>
+  {% endif %}
+  {% if grafica_materia %}
+    <div class="grafica">
+      <img src="data:image/png;base64,{{ grafica_materia }}" alt="Ausencias por materia">
+    </div>
+  {% endif %}
+  {% if grafica_temporal %}
+    <div class="grafica">
+      <img src="data:image/png;base64,{{ grafica_temporal }}" alt="Evolución temporal">
+    </div>
+  {% endif %}
+</div>
+<div id="tab-datos" class="tab-contenido">
+  {{ datos | safe }}
+</div>
 
-{% if resumen_matricula %}
-  <h3>Por matrícula</h3>
-  <div>{{ resumen_matricula | safe }}</div>
-{% endif %}
-
-<!-- Gráfica -->
-{% if grafica %}
-  <div class="grafica">
-    <img src="data:image/png;base64,{{ grafica }}" alt="Aprobados y Medias">
-  </div>
-{% endif %}
-
-<!-- Datos DF -->
-{% if datos %}
-  <div>{{ datos | safe }}</div>
+<script>
+function cambiarTab(nombre, boton) {
+    document.querySelectorAll(".tab-contenido").forEach(d => d.classList.remove("activo"));
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("activo"));
+    document.getElementById("tab-" + nombre).classList.add("activo");
+    boton.classList.add("activo");
+}
+</script>
 {% endif %}
 
 {% endblock %}
