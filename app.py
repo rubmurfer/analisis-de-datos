@@ -19,7 +19,7 @@ def variables_globales():
         "copy": "2026 · Proyecto de Análisis de Datos Académicos · Rubén Murcia Fernández"
     }
 
-head_datos_resumen = 50 # Número de filas mostradas por defecto
+head_datos_resumen = 200 # Número de filas mostradas por defecto
 @app.route("/")
 def inicio():
     msg = "Bienvenido a mi Sitio Web. Aquí podrás acceder a los datos del Centro."
@@ -156,7 +156,7 @@ def grupos(): # Rendimiento por Grupo
             .to_html(classes="datos", index=False, border=0)
         )
         html_resumen = (
-            resumen.rename(columns=columnas_resumen).head(head_datos_resumen)
+            resumen.rename(columns=columnas_resumen).sort_values("Media", ascending=False).head(head_datos_resumen)
             .to_html(classes="resumen grupos", index=True, border=0)
         )
 
@@ -224,13 +224,13 @@ def absentismo(): # Faltas, retrasos, etc
             df.rename(columns=columnas).head(head_datos_resumen)
             .to_html(classes="datos", index=False, border=0)
         )
-        html_resumen_grupo = resumen_grupo.head(head_datos_resumen).to_html(classes="resumen", index=True, border=0)
-        html_resumen_materia = resumen_materia.head(head_datos_resumen).to_html(classes="resumen", index=True, border=0)
-        html_resumen_matricula = resumen_matricula.head(head_datos_resumen).to_html(classes="resumen", index=True, border=0)
+        html_resumen_grupo = resumen_grupo.sort_values("TOTAL", ascending=False).head(head_datos_resumen).to_html(classes="resumen", index=True, border=0)
+        html_resumen_materia = resumen_materia.sort_values("TOTAL", ascending=False).head(head_datos_resumen).to_html(classes="resumen", index=True, border=0)
+        html_resumen_matricula = resumen_matricula.sort_values("TOTAL", ascending=False).head(head_datos_resumen).to_html(classes="resumen", index=True, border=0)
         
         grafica_grupo, grafica_materia, grafica_temporal = graficas_absentismo(
-            resumen_grupo.head(head_datos_resumen),
-            resumen_materia.head(head_datos_resumen),
+            resumen_grupo.sort_values("TOTAL", ascending=True).head(head_datos_resumen),
+            resumen_materia.sort_values("TOTAL", ascending=True).head(head_datos_resumen),
             df
         )
 

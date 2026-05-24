@@ -14,10 +14,10 @@
 En este proyecto, se nos ha encargado la tarea de analizar datos anónimos de nuestro centro educativo para su limpieza y presentación en un Sitio web interactivo.
 
 El sitio web cuenta con cuatro páginas:
-- Inicio: Página de bienvenida con datos globales resumidos.
-- Materias: Página dedicada al análisis del rendimiento académico por **materias**.
-- Grupos: Página dedicada al análisis del rendimiento académico por **grupos**.
-- Absentismo: Página dedicada al análisis del **absentismo**.
+- **Inicio**: Página de bienvenida con datos globales resumidos.
+- **Materias**: Página dedicada al análisis del rendimiento académico por **materias**.
+- **Grupos**: Página dedicada al análisis del rendimiento académico por **grupos**.
+- **Absentismo**: Página dedicada al análisis del **absentismo**.
 
 Las páginas principales cuentan con varios subapartados diseñados para su navegación intuitiva:
 - **Formularios**: En cada página podrás filtrar los datos por diferentes campos de manera simultánea.
@@ -30,10 +30,10 @@ Las páginas principales cuentan con varios subapartados diseñados para su nave
 Los requisitos de esta aplicación están listados en el fichero llamado `requirements.txt`. Para instalar las dependencias necesarias, se recomienda encarecidamente usar el comando `pip install -r requirements.txt` dentro de un **entorno virtual (.venv)**.
 
 Las librerías principales son las siguientes:
-- NumPy
-- Pandas
-- MatplotLib
-- Flask
+- `NumPy`
+- `Pandas`
+- `MatplotLib`
+- `Flask`
 
 ---
 # Instalación

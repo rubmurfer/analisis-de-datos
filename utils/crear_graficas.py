@@ -4,6 +4,16 @@ matplotlib.use("Agg") # Evitamos que Matplotlib muestra la gráfica en terminal,
 import matplotlib.pyplot as plt # Importamos pyplot para mostrar las grácias
 import io, base64  # Importamos base64 para codificar una imagen png cargado en memoria gracias a io
 
+color_0 = "#f7fbfd"
+
+color_1 = "#4e9898"
+color_2 = "#2a3f4a"
+
+color_3 = "#4e8498"
+color_4 = "#4e6498"
+
+color_5 = "#faf7f2"
+
 def grafica_materias_aprobados(resumen):
     materias = resumen.index.tolist()
     p_aprobados = resumen["Porcentaje_Aprobados"].tolist()
@@ -11,19 +21,22 @@ def grafica_materias_aprobados(resumen):
     altura = max(6, len(materias) * 0.4) # Calculamos la altura dinámicamente
     figura, ejes = plt.subplots(figsize=(10, altura))
 
-    ejes.barh(materias, p_aprobados, color="#4e9898", edgecolor="none")
-    ejes.set_xlabel("% Aprobados", color="#2a3f4a")
+    
+    barras = ejes.barh(materias, p_aprobados, color=color_1, edgecolor="none")
+    ejes.bar_label(barras, fmt="%.1f%%", padding=4, color=color_2) # Mostramos valores numéricos dentro de las barras
+
+    ejes.set_xlabel("% Aprobados", color=color_2)
     figura.subplots_adjust(left=0.35)
 
-    ejes.set_xlim(0, 100)
+    ejes.set_xlim(0, 120)
 
     # Estilo
 
-    figura.patch.set_facecolor("#f7fbfd")
-    ejes.set_facecolor("#f7fbfd")
+    figura.patch.set_facecolor(color_0)
+    ejes.set_facecolor(color_0)
     
-    ejes.set_title("Materias por porcentaje de aprobados", color="#2a3f4a")
-    ejes.tick_params(colors="#2a3f4a")  # color del texto de los ejes
+    ejes.set_title("Materias por porcentaje de aprobados", color=color_2)
+    ejes.tick_params(colors=color_2)  # color del texto de los ejes
 
     # Creamos una imagen en RAM y la pasamos a Base64 para inyectarla en HTML
     buf = io.BytesIO() # Creamos un buffer en memoria.
@@ -43,25 +56,29 @@ def grafica_grupos(resumen):
     altura = max(6, len(medias) * 0.4) # Calculamos la altura dinámicamente
     figura, (ejes1, ejes2) = plt.subplots(1, 2, figsize=(14, altura)) # Creamos dos ejems para mostrar las dos gráficas de manera pareja.
 
-    ejes1.barh(grupos, p_aprobados, color="#4e8498", edgecolor="none")
-    ejes2.barh(grupos, medias, color="#4e6498", edgecolor="none")
-    ejes1.set_xlabel("% Aprobados", color="#2a3f4a")
-    ejes2.set_xlabel("Medias por grupo", color="#2a3f4a")
+    ejes1.set_xlabel("% Aprobados", color=color_2)
+    ejes2.set_xlabel("Medias por grupo", color=color_2)
+
+    barras1 = ejes1.barh(grupos, p_aprobados, color=color_3, edgecolor="none") # Valores en las barras
+    barras2 = ejes2.barh(grupos, medias, color=color_4, edgecolor="none")
+
+    ejes1.bar_label(barras1, fmt="%.1f%%", padding=4, color=color_2)
+    ejes2.bar_label(barras2, fmt="%.2f", padding=4, color=color_2)
 
     figura.subplots_adjust(left=0.35)
 
-    ejes1.set_xlim(0, 100)
-    ejes2.set_xlim(0, 10)
+    ejes1.set_xlim(0, 120)
+    ejes2.set_xlim(0, 12)
 
     # Estilo
-    figura.patch.set_facecolor("#f7fbfd")
-    ejes1.set_facecolor("#f7fbfd")
-    ejes2.set_facecolor("#f7fbfd")
+    figura.patch.set_facecolor(color_0)
+    ejes1.set_facecolor(color_0)
+    ejes2.set_facecolor(color_0)
     
-    ejes1.set_title("Materias por porcentaje de aprobados", color="#2a3f4a")
-    ejes2.set_title("Media del alumnado por grupo", color="#2a3f4a")
-    ejes1.tick_params(colors="#2a3f4a") # color del texto de los ejes
-    ejes2.tick_params(colors="#2a3f4a")
+    ejes1.set_title("Materias por porcentaje de aprobados", color=color_2)
+    ejes2.set_title("Media del alumnado por grupo", color=color_2)
+    ejes1.tick_params(colors=color_2) # color del texto de los ejes
+    ejes2.tick_params(colors=color_2)
 
     ejes2.set_yticks([]) # Ocultamos los nombres de los cursos en el segundo eje
 
@@ -83,14 +100,16 @@ def grafica_absentismo_grupo(resumen_grupo):
     altura = max(6, len(grupos) * 0.4)
     figura, ejes = plt.subplots(figsize=(10, altura))
 
-    ejes.barh(grupos, ausencias, color="#4e9898", edgecolor="none")
-    ejes.set_xlabel("Ausencias por Grupo", color="#2a3f4a")
+
+    barras = ejes.barh(grupos, ausencias, color=color_1, edgecolor="none") # Valores en las barras
+    ejes.set_xlabel("Ausencias por Grupo", color=color_2)
+    ejes.bar_label(barras, fmt="%d", padding=4, color=color_2)
     figura.subplots_adjust(left=0.35)
 
-    figura.patch.set_facecolor("#faf7f2")
-    ejes.set_facecolor("#faf7f2")
-    ejes.set_title("Ausencias por Grupo", color="#2a3f4a")
-    ejes.tick_params(colors="#2a3f4a")
+    figura.patch.set_facecolor(color_5)
+    ejes.set_facecolor(color_5)
+    ejes.set_title("Ausencias por Grupo", color=color_2)
+    ejes.tick_params(colors=color_2)
 
     buf = io.BytesIO()
     figura.savefig(buf, format="png", bbox_inches="tight")
@@ -107,14 +126,15 @@ def grafica_absentismo_materia(resumen_materia):
     altura = max(6, len(grupos) * 0.4)
     figura, ejes = plt.subplots(figsize=(10, altura))
 
-    ejes.barh(grupos, ausencias, color="#4e9898", edgecolor="none")
-    ejes.set_xlabel("Ausencias por Materia", color="#2a3f4a")
+    barras = ejes.barh(grupos, ausencias, color=color_1, edgecolor="none")
+    ejes.set_xlabel("Ausencias por Materia", color=color_2)
+    ejes.bar_label(barras, fmt="%d", padding=4, color=color_2) # Valores en las barras
     figura.subplots_adjust(left=0.35)
 
-    figura.patch.set_facecolor("#faf7f2")
-    ejes.set_facecolor("#faf7f2")
-    ejes.set_title("Ausencias por Materia", color="#2a3f4a")
-    ejes.tick_params(colors="#2a3f4a")
+    figura.patch.set_facecolor(color_5)
+    ejes.set_facecolor(color_5)
+    ejes.set_title("Ausencias por Materia", color=color_2)
+    ejes.tick_params(colors=color_2)
 
     buf = io.BytesIO()
     figura.savefig(buf, format="png", bbox_inches="tight")
@@ -132,15 +152,15 @@ def grafica_absentismo_temporal(df):
 
     figura, ejes = plt.subplots(figsize=(12, 4))
 
-    ejes.plot(meses, ausencias, color="#4e9898", linewidth=2, marker="o")
-    ejes.set_xlabel("Mes", color="#2a3f4a")
-    ejes.set_ylabel("Ausencias", color="#2a3f4a")
-    ejes.set_title("Evolución de ausencias por mes", color="#2a3f4a")
-    ejes.tick_params(axis="x", rotation=45, colors="#2a3f4a")
-    ejes.tick_params(axis="y", colors="#2a3f4a")
+    ejes.plot(meses, ausencias, color=color_1, linewidth=2, marker="o")
+    ejes.set_xlabel("Mes", color=color_2)
+    ejes.set_ylabel("Ausencias", color=color_2)
+    ejes.set_title("Evolución de ausencias por mes", color=color_2)
+    ejes.tick_params(axis="x", rotation=45, colors=color_2)
+    ejes.tick_params(axis="y", colors=color_2)
 
-    figura.patch.set_facecolor("#faf7f2")
-    ejes.set_facecolor("#faf7f2")
+    figura.patch.set_facecolor(color_5)
+    ejes.set_facecolor(color_5)
     figura.tight_layout()
 
     buf = io.BytesIO()

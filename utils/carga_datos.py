@@ -9,12 +9,17 @@ from pathlib import Path
 
 datos = Path(__file__).parent.resolve() / "../datos.zip" # Cargamos el fichero .zip desde el directorio actual.
 
-with ZipFile(datos) as z: # Creamos los dataframes en base a los ficheros del .zip con sus parámetros correspondientes
-    with z.open("datNotas.csv") as f: df_notas = pd.read_csv(f, encoding="latin-1", sep=";")
-    with z.open("datMatriculas.csv") as f: df_matriculas = pd.read_csv(f, encoding="latin-1", sep=";")
-    with z.open("datFaltas.csv") as f: df_faltas = pd.read_csv(f, encoding="latin-1", sep=";")
-    with z.open("datMaterias.csv") as f: df_materias = pd.read_csv(f, encoding="latin-1", sep=";")
-    with z.open("datUnidades.csv") as f: df_unidades = pd.read_csv(f, encoding="latin-1", sep=";")
+try: 
+    with ZipFile(datos) as z: # Creamos los dataframes en base a los ficheros del .zip con sus parámetros correspondientes
+        with z.open("datNotas.csv") as f: df_notas = pd.read_csv(f, encoding="latin-1", sep=";")
+        with z.open("datMatriculas.csv") as f: df_matriculas = pd.read_csv(f, encoding="latin-1", sep=";")
+        with z.open("datFaltas.csv") as f: df_faltas = pd.read_csv(f, encoding="latin-1", sep=";")
+        with z.open("datMaterias.csv") as f: df_materias = pd.read_csv(f, encoding="latin-1", sep=";")
+        with z.open("datUnidades.csv") as f: df_unidades = pd.read_csv(f, encoding="latin-1", sep=";")
+
+except FileNotFoundError as e: print("ERROR:", e); raise
+except NameError as e: print("ERROR:", e); raise
+except Exception as e: print("ERROR Inesperado: ", e); raise
 
 # Cargamos solo las columnas necesarias | He decidido quitar la columna de ANNO, ya que todos los datos son del año 2025.
 df_notas = df_notas[["MATRICULA", "CURSO", "EVALUACION", "MATERIA", "NOTA"]] # Quitamos CL_MATERIA (va antes de NOTA) debido a que no aporta nada útil
@@ -27,7 +32,7 @@ df_unidades = df_unidades[["GRUPO", "ESTUDIO", "CURSO"]] # Opcional. Falta "TUTO
 
 df_notas = df_notas[df_notas["EVALUACION"].isin(["1ª Evaluación", "2ª Evaluación"])] # Solo mostramos las dos primeras evaluaciones
 
-df_notas[["MATRICULA"]] = df_notas[["MATRICULA"]].astype(int) # Mostramos estas dato numércios como INT
+df_notas[["MATRICULA"]] = df_notas[["MATRICULA"]].astype(int) # Mostramos estos datos numéricos como INT
 
 # Creamos un marco para reemplazar las notas categóricas por numéricas.
 notas_categoricas = {
