@@ -20,22 +20,22 @@
     </div>
   </header>
 
-  <main class="container">
-    
-    
-    
-    {% if msg %}
-      <div class="msg">{{ msg }}</div>
-    {% endif %}
+  <main>
+    <div class="container">
 
-    {% block content %}{% endblock %}
+      {% if msg %}
+        <div class="msg">{{ msg }}</div>
+      {% endif %}
 
+      {% block content %}{% endblock %}
+
+    </div>
   </main>
 
   <footer class="footer">
     <div class="container">
       {% if copy %}
-      <small>&copy; {{ copy }} </small>
+      <small>&copy; {{ copy }}</small>
       {% endif %}
     </div>
   </footer>

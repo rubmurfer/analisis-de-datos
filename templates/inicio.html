@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if resumen %}
+<div class="tarjetas">
+  <div class="tarjeta">
+    <span class="tarjeta-label">Matrículas</span>
+    <span class="tarjeta-valor">{{ resumen.total_matriculas }}</span>
+  </div>
+  <div class="tarjeta">
+    <span class="tarjeta-label">Grupos</span>
+    <span class="tarjeta-valor">{{ resumen.total_grupos }}</span>
+  </div>
+  <div class="tarjeta">
+    <span class="tarjeta-label">Materias</span>
+    <span class="tarjeta-valor">{{ resumen.total_materias }}</span>
+  </div>
+  <div class="tarjeta">
+    <span class="tarjeta-label">Media global</span>
+    <span class="tarjeta-valor">{{ resumen.media_global }} / 10</span>
+  </div>
+  <div class="tarjeta">
+    <span class="tarjeta-label">% Aprobados</span>
+    <span class="tarjeta-valor">{{ resumen.porcentaje_aprobados }}%</span>
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}

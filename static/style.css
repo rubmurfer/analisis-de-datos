@@ -32,7 +32,21 @@ body {
     margin: 0;
     background: var(--fondo-normal);
     color: var(--texto-normal);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
+
+main {
+    background: var(--fondo-main);
+    margin-top: 12px; border-radius: 8px;
+    border: 1px solid var(--borde-main);
+    overflow-x: auto;
+    flex: 1;
+}
+
+.footer { color: var(--texto-footer); margin-top: auto; padding-top: 30px; }
+
 .container {
     max-width: 80%;
     margin: 0 auto;
@@ -53,13 +67,7 @@ body {
 }
 .nav a:hover { color: var(--texto-cabeceras); }
 
-main {
-    background: var(--fondo-main);
-    margin-top: 12px; border-radius: 8px;
-    border: 1px solid var(--borde-main);
-    overflow-x: auto;
-}
-.footer {  color: var(--texto-footer); margin-top: 16px; }
+
 
 table {
     width: 100%;
@@ -246,4 +254,35 @@ select:hover { border-color: var(--texto-footer); }
     margin: 0 auto;
     border-radius: 8px;
     border: 1px solid var(--borde-main);
+}
+
+/* Tarjetas de /inicio */
+.tarjetas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.tarjeta {
+    background: var(--fondo-tabla-2);
+    border: 1px solid var(--borde-main);
+    border-radius: 8px;
+    padding: 16px;
+    display: grid;
+    gap: 6px;
+}
+
+.tarjeta-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--texto-footer);
+}
+
+.tarjeta-valor {
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--texto-normal);
 }

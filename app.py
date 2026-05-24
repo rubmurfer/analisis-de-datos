@@ -2,7 +2,7 @@
 
 from flask import Flask, render_template, request
 from utils.calcular_datos import (
-    pd, obtener_rendimiento_materia, obtener_rendimiento_grupo, obtener_faltas,
+    pd, obtener_rendimiento_materia, obtener_rendimiento_grupo, obtener_faltas, obtener_resumen_inicio,
 
     materias_lista_evaluaciones, materias_lista_grupos, materias_lista_cursos,
     grupos_lista_evaluaciones, grupos_lista_cursos, grupos_lista_materias,
@@ -24,10 +24,13 @@ head_datos_resumen = 50 # Número de filas mostradas por defecto
 def inicio():
     msg = "Bienvenido a mi página Web. Aquí podrás acceder a los datos del centro."
 
+    resumen = obtener_resumen_inicio()
+
     return render_template(
-        "base.html",
+        "inicio.html",
         title = "Inicio",
-        msg = msg
+        msg = msg,
+        resumen = resumen,
     )
 
 @app.route("/materias", methods = ["GET"])
@@ -218,9 +221,9 @@ def absentismo(): # Faltas, retrasos, etc
             df.rename(columns=columnas).head(head_datos_resumen)
             .to_html(classes="datos", index=False, border=0)
         )
-        html_resumen_grupo = resumen_grupo.to_html(classes="resumen", index=True, border=0)
-        html_resumen_materia = resumen_materia.to_html(classes="resumen", index=True, border=0)
-        html_resumen_matricula = resumen_matricula.to_html(classes="resumen", index=True, border=0)
+        html_resumen_grupo = resumen_grupo.head(head_datos_resumen).to_html(classes="resumen", index=True, border=0)
+        html_resumen_materia = resumen_materia.head(head_datos_resumen).to_html(classes="resumen", index=True, border=0)
+        html_resumen_matricula = resumen_matricula.head(head_datos_resumen).to_html(classes="resumen", index=True, border=0)
 
     return render_template(
         "absentismo.html",

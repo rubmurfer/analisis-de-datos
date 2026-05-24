@@ -6,6 +6,7 @@ from utils.carga_datos import pd, np, df_unidades, df_faltas, df_materias, df_ma
 
 df_notas_matriculas = pd.merge(df_notas, df_matriculas, on="MATRICULA", how="left")
 
+# Cargamos el dataframe fusionado y limpiamos las columnas redundantes
 df_faltas_matriculas = pd.merge(df_faltas, df_matriculas, left_on="EXPEDIENTE", right_on="MATRICULA", how="left")
 df_faltas_matriculas = df_faltas_matriculas.drop(columns=["ESTUDIOS_y", "GRUPO_y", "MATRICULA"])
 df_faltas_matriculas = df_faltas_matriculas.rename(columns={"ESTUDIOS_x": "ESTUDIOS", "GRUPO_x": "GRUPO"})
@@ -34,21 +35,6 @@ grupos_lista_materias = df_notas_matriculas["MATERIA"].unique().tolist()
 absentismo_lista_grupos = df_faltas_matriculas["GRUPO"].unique().tolist()
 absentismo_lista_estudios = df_faltas_matriculas["ESTUDIOS"].unique().tolist()
 absentismo_lista_materias = df_faltas_matriculas["MATERIA"].unique().tolist()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 # Establecemos las funciones para obtener el rendimiento.
@@ -134,3 +120,22 @@ def obtener_faltas(fecha_inicio=None, fecha_fin=None, grupo=None, estudios=None,
     return df, resumen_grupo, resumen_materia, resumen_matricula
 
 
+def obtener_resumen_inicio():
+    df = df_notas_matriculas.copy()
+
+    # Creamos las variables que nos darán los datos globales
+
+    total_matriculas = len(df["MATRICULA"].unique())
+    total_grupos = len(df["GRUPO"].unique())
+    total_materias = len(df["MATERIA"].unique())
+    media_global = (df["NOTA"].sum() / len(df["NOTA"])).round(2)
+    porcentaje_aprobados = round(len(df[df["NOTA"] >= 5]) / len(df["NOTA"]) * 100, 2)
+
+    # Creamos un dataframe que será usado en la página de Inicio como resumen["total_matriculas"], por ejemplo
+    return {
+        "total_matriculas": total_matriculas,
+        "total_grupos": total_grupos,
+        "total_materias": total_materias,
+        "media_global": media_global,
+        "porcentaje_aprobados": porcentaje_aprobados
+    }
