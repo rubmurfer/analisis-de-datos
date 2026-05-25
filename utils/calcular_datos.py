@@ -125,8 +125,8 @@ def obtener_resumen_inicio():
 
     # Creamos las variables que nos darán los datos globales
 
-    #total_matriculas = len(df["MATRICULA"].unique()) # Contamos las matrículas únicas con valores útiles
-    total_matriculas = len(df_matriculas["MATRICULA"].unique()) # Aquí contamos el número de matrículas únicas, sin importar los datos que tengan
+    total_matriculas = len(df["MATRICULA"].unique()) # Contamos las matrículas únicas con valores útiles
+    #total_matriculas = len(df_matriculas["MATRICULA"].unique()) # Aquí contamos el número de matrículas únicas, sin importar los datos que tengan
     total_grupos = len(df["GRUPO"].unique())
     total_materias = len(df["MATERIA"].unique())
     media_global = (df["NOTA"].sum() / len(df["NOTA"])).round(2)
