@@ -1,5 +1,5 @@
 # Proyecto de Análisis de Datos y Aplicación Web
-> Hecho por **Rubén Murcia** ([GitHub](https://github.com/rubmurfer/analisis-de-datos))
+> Hecho por **Rubén Murcia** ([LinkedIn](https://www.linkedin.com/in/rubmurfer))
 
 ## Contenido
 - Introducción
